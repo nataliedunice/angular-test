@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from 'rxjs';
 
-import { roomsMock } from './mocks/roomsMock';
+import { filteredRoomsByDateMock, roomsMock } from './mocks/roomsMock';
 import { RoomModel } from '../../core/models/room.model';
 
 @Injectable()
@@ -13,6 +13,11 @@ export class DataService {
   getRooms(): Observable<RoomModel[]> {
     // return this.http.get<RoomModel[]>('roomsUrl');
     return of(roomsMock);
+  }
+
+  getFilteredRooms(startDate: string, endDate: string): Observable<RoomModel[]> {
+    // return this.http.get<RoomModel[]>(`roomsUrl?startDate=${startDate}&endDate=${endDate}`);
+    return of(filteredRoomsByDateMock);
   }
 
 }

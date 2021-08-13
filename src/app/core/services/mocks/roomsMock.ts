@@ -49,7 +49,7 @@ export const roomsMock: RoomModel[] = [
   },
   {
     id: '9',
-    type: 'With sea views 8',
+    type: 'With sea views 7',
     count: '9',
     price: '50$',
   },{
@@ -60,7 +60,7 @@ export const roomsMock: RoomModel[] = [
   },
   {
     id: '11',
-    type: 'Comfort 2',
+    type: 'Comfort 22',
     count: '9',
     price: '80$',
   },
@@ -103,5 +103,26 @@ export const roomsMock: RoomModel[] = [
     type: 'With sea views 5',
     count: '3',
     price: '590$',
+  }
+];
+
+export const filteredRoomsByDateMock: RoomModel[] = [
+  {
+    id: '1',
+    type: 'Lux',
+    count: '1',
+    price: '100$',
+  },
+  {
+    id: '2',
+    type: 'Comfort',
+    count: '6',
+    price: '10$',
+  },
+  {
+    id: '3',
+    type: 'With sea views',
+    count: '5',
+    price: '50$',
   }
 ];

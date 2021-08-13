@@ -8,6 +8,6 @@ export interface RoomModel {
 type RoomKeys = keyof RoomModel;
 
 export interface RoomColumnHeader {
-  name: RoomKeys;
-  value: string;
+  value: RoomKeys;
+  name: string;
 }

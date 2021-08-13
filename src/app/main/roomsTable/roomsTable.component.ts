@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 import { RoomColumnHeader, RoomModel } from '../../core/models/room.model';
 import { DataService } from '../../core/services/data.service';
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     selector     : 'rooms-table',
@@ -14,43 +15,61 @@ import {MatSort} from "@angular/material/sort";
 })
 export class RoomsTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private subscription: Subscription;
+  private roomsSubscription: Subscription;
+  private filteredRoomsSubscription: Subscription;
   headers: RoomColumnHeader[] = [
     {
-      name: 'type',
-      value: 'Номер'
+      value: 'type',
+      name: 'Номер'
     },
     {
-      name: 'count',
-      value: 'Количество мест'
+      value: 'count',
+      name: 'Количество мест'
     },
     {
-      name: 'price',
-      value: 'Цена за день'
+      value: 'price',
+      name: 'Цена за день'
     }
   ];
-  displayedHeaders: any[] = this.headers.map(header => header.name);
+  defaultSortingHeader: string = 'type';
+  sortingHeaders: string[] = ['type', 'price'];
+  displayedHeaders: any[] = this.headers.map(header => header.value);
   rooms = new MatTableDataSource<RoomModel>([]);
+  form = new FormGroup({
+    startDate: new FormControl(null, { validators: [Validators.required]}),
+    endDate: new FormControl(null, { validators: [Validators.required]})
+  });
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dataService: DataService) {}
-
 
   ngOnInit(): void {
     this.init();
   }
 
   init(): void {
-    this.subscription = this.dataService.getRooms().subscribe(res => {
+    this.roomsSubscription = this.dataService.getRooms().subscribe(res => {
       this.rooms.data = res;
     });
   }
 
   ngAfterViewInit(): void {
     this.rooms.paginator = this.paginator;
+    this.rooms.sort = this.sort;
+  }
+
+  applyDateFilter(): void {
+    this.filteredRoomsSubscription = this.dataService.getFilteredRooms(
+      this.form.controls.startDate.value,
+      this.form.controls.endDate.value
+    ).subscribe(res => {
+      this.rooms.data = res;
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.roomsSubscription.unsubscribe();
+    this.filteredRoomsSubscription.unsubscribe();
   }
 }
