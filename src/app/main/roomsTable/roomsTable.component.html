@@ -1,0 +1,14 @@
+<div>
+  <table mat-table [dataSource]="rooms">
+    <ng-container *ngFor = "let column of headers" matColumnDef="{{column.name}}">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+      <td mat-cell *matCellDef="let element"> {{element[column.name]}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedHeaders"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedHeaders;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons >
+  </mat-paginator>
+</div>
