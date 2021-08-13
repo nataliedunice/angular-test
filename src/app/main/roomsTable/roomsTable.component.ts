@@ -3,10 +3,13 @@ import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 
 import { RoomColumnHeader, RoomModel } from '../../core/models/room.model';
 import { DataService } from '../../core/services/data.service';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {BookRoomModalComponent} from "../../core/components/bookRoomModal/bookRoomModal.component";
+
 
 @Component({
     selector     : 'rooms-table',
@@ -17,6 +20,7 @@ export class RoomsTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private roomsSubscription: Subscription;
   private filteredRoomsSubscription: Subscription;
+  private bookModalSubscription: Subscription;
   headers: RoomColumnHeader[] = [
     {
       value: 'type',
@@ -42,7 +46,10 @@ export class RoomsTableComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.init();
@@ -68,8 +75,19 @@ export class RoomsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  openModal(row: RoomModel) {
+    const modalRef = this.dialog.open(BookRoomModalComponent);
+
+    modalRef.componentInstance.room = row;
+
+    this.bookModalSubscription = modalRef.componentInstance.bookRoom.subscribe(() => {
+    })
+
+  }
+
   ngOnDestroy(): void {
     this.roomsSubscription.unsubscribe();
     this.filteredRoomsSubscription.unsubscribe();
+    this.bookModalSubscription.unsubscribe();
   }
 }
