@@ -1,8 +1,8 @@
 export interface RoomModel {
-  id: string;
+  id: number;
   type: string;
-  count: string;
-  price: string;
+  count: number;
+  price: number;
 }
 
 type RoomKeys = keyof RoomModel;

@@ -36,6 +36,7 @@ export class RoomsTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   ];
   defaultSortingHeader: string = 'type';
+  priceColumnValue: string = 'price';
   sortingHeaders: string[] = ['type', 'price'];
   displayedHeaders: any[] = this.headers.map(header => header.value);
   rooms = new MatTableDataSource<RoomModel>([]);
